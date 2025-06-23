@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced CV Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth@1.4.18/mammoth.browser.min.js"></script>
+  <link rel="stylesheet" href="projectCss.css">
+  
+</head>
+<body>
+  <!-- Landing Page -->
+  <div class="landing-page" id="landingPage">
+    <div class="language-selector">
+      <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="fa">فارسی</option>
+        <option value="ps">پشتو</option>
+        <option value="uk">Українська</option>
+      </select>
+    </div>
+    
+    <div class="header">
+      <h1 id="landingTitle">Advanced CV Generator</h1>
+      <p id="landingSubtitle">Create professional resumes with stunning designs in minutes. Select a template to get started!</p>
+    </div>
+    
+    <div class="templates-container">
+      <div class="template-card" onclick="selectTemplate('classic')">
+        <div class="template-inner">
+          <div class="template-front">
+            <i class="fas fa-file-alt"></i>
+            <h3 id="classicTitle">Classic</h3>
+            <p id="classicSubtitle">Traditional & Professional</p>
+          </div>
+          <div class="template-back">
+            <h3 id="classicBackTitle">Classic Template</h3>
+            <p id="classicBackText">Elegant and timeless design perfect for traditional industries. Features a clean layout with a professional touch.</p>
+            <button class="btn" id="classicBtn" onclick="selectTemplate('classic')">Select Template</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="template-card" onclick="selectTemplate('minimal')">
+        <div class="template-inner">
+          <div class="template-front">
+            <i class="fas fa-briefcase"></i>
+            <h3 id="minimalTitle">Minimal</h3>
+            <p id="minimalSubtitle">Clean & Modern</p>
+          </div>
+          <div class="template-back">
+            <h3 id="minimalBackTitle">Minimal Template</h3>
+            <p id="minimalBackText">Simple yet sophisticated design with ample white space. Ideal for tech and creative industries.</p>
+            <button class="btn" id="minimalBtn" onclick="selectTemplate('minimal')">Select Template</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="template-card" onclick="selectTemplate('graphic')">
+        <div class="template-inner">
+          <div class="template-front">
+            <i class="fas fa-paint-brush"></i>
+            <h3 id="graphicTitle">Graphic</h3>
+            <p id="graphicSubtitle">Creative & Bold</p>
+          </div>
+          <div class="template-back">
+            <h3 id="graphicBackTitle">Graphic Template</h3>
+            <p id="graphicBackText">Modern design with bold colors and creative layout. Perfect for designers and marketing professionals.</p>
+            <button class="btn" id="graphicBtn" onclick="selectTemplate('graphic')">Select Template</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Form Page -->
+  <div class="form-page" id="formPage">
+    <div class="language-selector">
+      <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> <span id="backBtnText">Back</span>
+      </button>
+      <select id="formLanguageSelector" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="fa">فارسی</option>
+        <option value="ps">پشتو</option>
+        <option value="uk">Українська</option>
+      </select>
+    </div>
+    
+    <div class="form-container">
+      <div class="form-section">
+        <h2 class="section-title" id="personalInfoTitle">Personal Information</h2>
+        
+        <div class="file-upload">
+          <input type="file" id="docInput" accept=".pdf,.doc,.docx" style="display: none;">
+          <button class="upload-btn" onclick="document.getElementById('docInput').click()">
+            <i class="fas fa-file-upload"></i> <span id="uploadCvText">Upload CV (PDF/Word)</span>
+          </button>
+          <span id="fileName">No file selected</span>
+        </div>
+        
+        <div class="image-preview" id="imagePreview">
+          <i class="fas fa-user"></i>
+        </div>
+        
+        <input type="file" id="profilePic" accept="image/*" style="display: none;">
+        <button class="upload-btn" onclick="document.getElementById('profilePic').click()" style="width:100%; margin-bottom: 20px;">
+          <i class="fas fa-camera"></i> <span id="uploadPhotoText">Upload Profile Photo</span>
+        </button>
+        
+        <div class="form-group">
+          <label for="fullName" id="fullNameLabel">Full Name</label>
+          <input type="text" id="fullName" placeholder="John Doe">
+        </div>
+        
+        <div class="form-group">
+          <label for="jobTitle" id="jobTitleLabel">Job Title</label>
+          <input type="text" id="jobTitle" placeholder="Software Engineer">
+        </div>
+        
+        <div class="form-group">
+          <label for="email" id="emailLabel">Email</label>
+          <input type="email" id="email" placeholder="john.doe@example.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone" id="phoneLabel">Phone</label>
+          <input type="tel" id="phone" placeholder="+1 (123) 456-7890">
+        </div>
+        
+        <div class="form-group">
+          <label for="dob" id="dobLabel">Date of Birth</label>
+          <input type="date" id="dob">
+        </div>
+        
+        <div class="form-group">
+          <label for="address" id="addressLabel">Address</label>
+          <input type="text" id="address" placeholder="123 Main St, City, Country">
+        </div>
+        
+        <h2 class="section-title" id="professionalTitle">Professional Details</h2>
+        
+        <div class="form-group">
+          <label for="summary" id="summaryLabel">Professional Summary</label>
+          <textarea id="summary" rows="4" placeholder="Experienced professional with..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="education" id="educationLabel">Education</label>
+          <textarea id="education" rows="3" placeholder="Bachelor of Science in Computer Science..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="experience" id="experienceLabel">Work Experience</label>
+          <textarea id="experience" rows="3" placeholder="Senior Developer at XYZ Company..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="skills" id="skillsLabel">Skills</label>
+          <textarea id="skills" rows="3" placeholder="JavaScript, React, Node.js..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="references" id="referencesLabel">References</label>
+          <textarea id="references" rows="3" placeholder="Available upon request..."></textarea>
+        </div>
+        
+        <h2 class="section-title" id="languagesTitle">Professional Languages</h2>
+        
+        <div id="languagesContainer">
+          <div class="language-item">
+            <input type="text" placeholder="Language" class="language-name">
+            <select class="language-level">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Fluent">Fluent</option>
+              <option value="Native">Native</option>
+            </select>
+            <button class="remove-language-btn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        
+        <button class="add-language-btn" id="addLanguageBtn">
+          <i class="fas fa-plus"></i> <span id="addLanguageText">Add Language</span>
+        </button>
+        
+        <div class="form-buttons">
+          <button class="btn" onclick="generateCV()">
+            <i class="fas fa-eye"></i> <span id="previewBtnText">Preview CV</span>
+          </button>
+          <button class="btn btn-secondary" onclick="downloadPDF()">
+            <i class="fas fa-download"></i> <span id="downloadBtnText">Download PDF</span>
+          </button>
+          <button class="btn back-btn" onclick="goBack()" style="background: rgba(255,255,255,0.1); color: white;">
+            <i class="fas fa-arrow-left"></i> <span id="formBackBtnText">Back</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="preview-section">
+        <h2 class="section-title" id="previewTitle">CV Preview</h2>
+        <div class="cv-preview-container">
+          <div class="cv-preview" id="cvPreview">
+            <p id="previewMessage">Fill out the form to generate your CV preview...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>
